@@ -4,18 +4,16 @@ import cardsList from '../../cards.js';
 import puzzleLogo from '../../assets/vector.svg';
 import cardBack from '../../assets/card-back.png';
 
-
-let cardVerify = {
-  cardTrunedNow: false,
-  cardTurnedValue: ''
-}
-
-let points = 0;
-let state = false
-
-
 function Main() {
   const [cards, setCards] = useState(cardsList);
+
+  const [cardVerify, setCardVerify] = useState({
+    cardTrunedNow: false,
+    cardTurnedValue: ''
+  });
+
+  const [points, setPoints] = useState(0);
+  const [status, setStatus] = useState(false);
 
   function handleFlipCard(cardIndex, cardTurned, cardSlug) {
     let { cardTrunedNow, cardTurnedValue } = cardVerify
@@ -30,13 +28,14 @@ function Main() {
     localCards[findCard].turned = true;
 
     if (!cardTrunedNow) {
-      cardVerify = {
+      setCardVerify({
         cardTrunedNow: true,
         cardTurnedValue: cardSlug
-      }
+      })
 
     } else {
-      state = true;
+      setStatus(true);
+
       setTimeout(() => {
         const localCards = [...cards];
         if (cardTurnedValue === cardSlug) {
@@ -45,7 +44,7 @@ function Main() {
               return card.slug === cardSlug
             }), 1)
           }
-          points++;
+          setPoints(points + 1);
 
           resetCardVerify();
         }
@@ -84,15 +83,15 @@ function Main() {
     scramblerCards(localCards)
     resetCardVerify();
 
-    points = 0;
+    setPoints(0);
   }
 
   function resetCardVerify() {
-    cardVerify = {
+    setCardVerify({
       cardTrunedNow: false,
       cardTurnedValue: ''
-    }
-    state = false
+    })
+    setStatus(false)
   }
 
   return (
@@ -119,7 +118,7 @@ function Main() {
       >
         {cards.map((card, index) => (
           <button
-            disabled={state}
+            disabled={status}
             key={index}
             onClick={() => handleFlipCard(index, card.turned, card.slug)}
           >
