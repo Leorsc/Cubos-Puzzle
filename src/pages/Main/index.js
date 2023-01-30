@@ -16,14 +16,14 @@ function Main() {
   const [status, setStatus] = useState(false);
 
   function handleFlipCard(cardIndex, cardTurned, cardSlug) {
-    let { cardTrunedNow, cardTurnedValue } = cardVerify
+    const { cardTrunedNow, cardTurnedValue } = cardVerify
     const localCards = [...cards];
 
     if (cardTurned) {
       return;
     }
 
-    let findCard = localCards.findIndex((card) => { return card === localCards[cardIndex] });
+    const findCard = localCards.findIndex((card) => { return card === localCards[cardIndex] });
 
     localCards[findCard].turned = true;
 
